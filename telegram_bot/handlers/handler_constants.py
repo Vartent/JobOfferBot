@@ -1,0 +1,4 @@
+GET_WEATHER_COMMAND = "weather"
+GET_CAT_COMMAND = "converter"
+CONVERT_CURRENCY_COMMAND = "cat"
+CREATE_POLL_COMMAND = "create_poll"
