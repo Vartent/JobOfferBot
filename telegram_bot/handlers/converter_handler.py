@@ -6,13 +6,13 @@ from ..services import get_currencies, convert_values
 from ..app import dp, bot
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
-
+# declare currencies state
 class Currencies(StatesGroup):
-    init_curr = State()
-    result_curr = State()
-    amount = State()
+    init_curr = State() # currency to convert from
+    result_curr = State() # currency to convert to
+    amount = State() # amount of money
 
-
+# return a keyboard with all the currencies available as Coroutine
 async def currency_keyboard():
     currencies = await get_currencies()
     buttons = []
@@ -29,15 +29,16 @@ async def currency_keyboard():
 
     return k
 
-
-@dp.callback_query_handler(text=handler_constants.CONVERT_CURRENCY_COMMAND)
+# handle the initiation of currency converting process
+@dp.callback_query_handler(text=handler_constants.CONVERT_CURRENCY_CALLBACK)
 async def ask_init_currency(call: CallbackQuery):
-    await b("processing...")
+    await bot.send_chat_action(call.message.chat.id, ChatActions.TYPING)
     keyboard = await currency_keyboard()
     await Currencies.init_curr.set()
     await call.message.answer(text="Select currency that you want to convert\n\nFROM", reply_markup=keyboard)
 
 
+# got the init currency, ask for result currency
 @dp.message_handler(state=Currencies.init_curr, content_types=['text'])
 async def ask_init_currency(message: Message, state: FSMContext):
     await state.update_data(init_curr=message.text)
@@ -45,13 +46,14 @@ async def ask_init_currency(message: Message, state: FSMContext):
     await message.answer(text="Now select currency that you want to convert\n\nTO")
 
 
+# got the result currency, ask for amount of money
 @dp.message_handler(state=Currencies.result_curr, content_types=['text'])
 async def ask_result_currency(message: Message, state: FSMContext):
     await state.update_data(result_curr=message.text)
     await Currencies.amount.set()
     await message.answer(text="No tell me how much?", reply_markup=ReplyKeyboardRemove())
 
-
+# got the amount, send result
 @dp.message_handler(state=Currencies.amount, content_types=['text'])
 async def send_result(message: Message, state: FSMContext):
     print(' im in send result')

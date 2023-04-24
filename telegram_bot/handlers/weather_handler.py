@@ -7,11 +7,13 @@ from ..app import dp,bot
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
+# declare state for storing city data
 class UserCity(StatesGroup):
     city = State()
 
 
-@dp.callback_query_handler(text=handler_constants.GET_WEATHER_COMMAND)
+# init the weather providing process
+@dp.callback_query_handler(text=handler_constants.GET_WEATHER_CALLBACK)
 async def start(call: CallbackQuery):
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     keyboard.add(KeyboardButton(text="Send location", request_location=True))
@@ -24,12 +26,14 @@ async def start(call: CallbackQuery):
         await call.message.answer(text='Type in the city name')
 
 
+# in case if user is using mobile devise and can provide location for more accurate data response
 @dp.message_handler(state=UserCity.city, content_types=['location'])
 async def send_weather(message: Message, state: FSMContext):
     await message.answer(get_weather_by_location(message.location.latitude, message.location.longitude))
     await state.finish()
 
 
+# in case if user cannot provide current location, just type in city name
 @dp.message_handler(state=UserCity.city, content_types=['text'])
 async def send_city_weather(message: Message, state: FSMContext):
     await message.answer(get_weather_by_city(message.text))

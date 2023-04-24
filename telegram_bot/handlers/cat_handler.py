@@ -3,8 +3,8 @@ from ..services import get_cat
 from ..app import dp, bot
 from . import handler_constants
 
-
-@dp.callback_query_handler(text=handler_constants.GET_CAT_COMMAND)
+# Handle the get_cat menu button click
+@dp.callback_query_handler(text=handler_constants.GET_CAT_CALLBACK)
 async def start(call: CallbackQuery):
     cat_url = await get_cat()
     await call.answer()

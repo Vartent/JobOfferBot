@@ -1,5 +1,6 @@
 import requests
 
+# get a random cutie cat picture
 async def get_cat():
     try:
         url = "https://api.thecatapi.com/v1/images/search"

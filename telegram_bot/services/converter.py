@@ -1,9 +1,7 @@
 from ..config import ERD_API_KEY
-
 import requests
 
-
-
+# get available currencies for the keyboard
 async def get_currencies():
     try:
         url = "https://api.apilayer.com/exchangerates_data/symbols"
@@ -22,6 +20,8 @@ async def get_currencies():
         print("An error occurred", error)
         return f"An error occurred.\nPlease try again"
 
+
+# get convert result
 def convert_values(init_currency: str, result_currency: str, amount):
     try:
         url = f"https://api.apilayer.com/exchangerates_data/convert?to={result_currency}&from={init_currency}&amount={amount}"
