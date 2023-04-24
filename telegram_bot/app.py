@@ -5,6 +5,6 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-bot = Bot(token="6143113557:AAFTd17dyKhsgPw75LmnUEYY7M2G-o9ZnwE")
+bot = Bot(token=BOT_TOKEN)
 
 dp = Dispatcher(bot=bot, storage=MemoryStorage())

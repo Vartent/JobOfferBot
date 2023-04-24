@@ -1,4 +1,3 @@
-from aiogram import Bot, types
 from aiogram.dispatcher import FSMContext
 
 from . import handler_constants

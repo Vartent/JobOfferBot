@@ -3,7 +3,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, Message, Callback
 
 from . import handler_constants
 from ..services import get_weather_by_location, get_weather_by_city
-from ..app import dp,bot
+from ..app import dp
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
